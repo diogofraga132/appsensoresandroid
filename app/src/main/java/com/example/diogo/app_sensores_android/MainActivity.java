@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     private View root;
     private float maxValue;
     private TextView tvLuz;
-    private TextView tvProx;
+    private ImageView imgViewCaution;
     private Vibrator vibrator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         setContentView(R.layout.activity_main);
         root = findViewById(R.id.root);
         tvLuz = (TextView) findViewById(R.id.tvValorLuz);
-        tvProx = (TextView) findViewById(R.id.tvValorProx);
+        imgViewCaution = (ImageView) findViewById(R.id.imgViewCaution);
         vibrator = (Vibrator )getSystemService(Context.VIBRATOR_SERVICE);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -64,18 +65,20 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         if (sensorEvent.sensor.getType()==Sensor.TYPE_LIGHT){
             float value = sensorEvent.values[0];
             tvLuz.setText("Luminosidade : " + value + " lx");
-            // entre 0 and 255
+            // entre 0 e 255
             int newValue = (int) (255f * value / maxValue);
-            root.setBackgroundColor(Color.rgb(newValue, newValue, newValue));
-            tvLuz.setTextColor(Color.rgb(0xFFFFFF-newValue,0xFFFFFF-newValue,0xFFFFFF-newValue));
+            root.setBackgroundColor(Color.rgb(newValue*100, newValue*100, newValue*100));
+
         }
         if (sensorEvent.sensor.getType()==Sensor.TYPE_PROXIMITY){
             float value = sensorEvent.values[0];
-            tvProx.setText("Proximidade = " + value);
+           // tvProx.setText("Proximidade = " + value);
             if (value==0){
+                imgViewCaution.setVisibility(View.VISIBLE);
                 vibrator.vibrate(99999);
             }
             else{
+                imgViewCaution.setVisibility(View.INVISIBLE);
                 vibrator.cancel();
             }
         }
