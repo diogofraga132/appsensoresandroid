@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
             Toast.makeText(this, "O dispositivo não tem sensor de luminosidade!", Toast.LENGTH_SHORT).show();
             finish();
         }
+        if (proximitySensor == null) {
+            Toast.makeText(this, "O dispositivo não tem sensor de proximidade!", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         // valor maximo do sensor de luminosidade
         maxValue = lightSensor.getMaximumRange();
