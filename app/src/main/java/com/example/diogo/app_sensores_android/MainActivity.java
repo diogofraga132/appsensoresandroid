@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     private SensorManager sensorManager;
     private Sensor lightSensor;
     private Sensor proximitySensor;
-    private SensorEventListener proxEventListener;
-    private SensorEventListener lightEventListener;
     private View root;
     private float maxValue;
     private TextView tvLuz;
@@ -30,8 +28,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         root = findViewById(R.id.root);
-        tvLuz = (TextView) findViewById(R.id.tvValorLuz);
-        imgViewCaution = (ImageView) findViewById(R.id.imgViewCaution);
+        tvLuz = findViewById(R.id.tvValorLuz);
+        imgViewCaution = findViewById(R.id.imgViewCaution);
         vibrator = (Vibrator )getSystemService(Context.VIBRATOR_SERVICE);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
