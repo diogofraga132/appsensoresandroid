@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     private TextView tvLuz;
     private ImageView imgViewCaution;
     private Vibrator vibrator;
+    private float maxValueProx;
+    private TextView tvProx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +32,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         root = findViewById(R.id.root);
         tvLuz = findViewById(R.id.tvValorLuz);
         imgViewCaution = findViewById(R.id.imgViewCaution);
+        tvProx = findViewById(R.id.tvValorProx);
         vibrator = (Vibrator )getSystemService(Context.VIBRATOR_SERVICE);
-
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
 
         // valor maximo do sensor de luminosidade
         maxValue = lightSensor.getMaximumRange();
+
+        //valor máximo proximidade
+        maxValueProx = proximitySensor.getMaximumRange();
     }
 
     @Override
@@ -74,14 +79,14 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         }
         if (sensorEvent.sensor.getType()==Sensor.TYPE_PROXIMITY){
             float value = sensorEvent.values[0];
-           // tvProx.setText("Proximidade = " + value);
-            if (value==0){
-                imgViewCaution.setVisibility(View.VISIBLE);
-                vibrator.vibrate(99999);
-            }
-            else{
+            tvProx.setText("Proximidade = " + value);
+            if (value==maxValueProx){
                 imgViewCaution.setVisibility(View.INVISIBLE);
                 vibrator.cancel();
+            }
+            else{
+                imgViewCaution.setVisibility(View.VISIBLE);
+                vibrator.vibrate(99999);
             }
         }
     }
